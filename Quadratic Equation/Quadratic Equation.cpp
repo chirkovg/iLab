@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <math.h>
 
 const int all_reals = -1;
@@ -76,7 +76,6 @@ int main()
     {
         printf("%s %c", "All reals are roots",'\n');
     }
-	//тралала
     return 0;
 }
 
