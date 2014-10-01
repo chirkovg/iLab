@@ -103,11 +103,11 @@ void Problem_C_4_2008()
                                                  
     for (int i = 0; i < TableSize; i++)                 //
     {                                                   //
-        assert(i < MaxTableSize); 
-        assert(i >= 0);                      //
+        assert(i < MaxTableSize);                       //
+        assert(i >= 0);                                 //
         for (int j = 0; j < TableSize; j++)             //
-        {                      
-            assert(j >= 0);                         //    reading the items of table
+        {                                               //
+            assert(j >= 0);                             //    reading the items of table
             assert(j < MaxTableSize);                   //
             scanf("%d", &Table[i][j]);                  //
         }                                               //
@@ -152,7 +152,7 @@ void Problem_C_1_2008()
     }
     int StringSize = 0;
     
-    printf("%s", "Type your string with EOF in the end: \n");
+    printf("%s", "Type your string with EOF in the end:\n");
     for (int i = 0; i < MaxStringSize; i++)
     {
         assert(i >= 0);
@@ -164,19 +164,19 @@ void Problem_C_1_2008()
         }
     }
     
-    int ModifiedStringSize = 0;
+    int ModifiedStringSize = 0;                                                        //this is iterator
     for (int i = 0; i < StringSize; i++) 
     {
         assert(i < MaxStringSize);
         assert(i >= 0);
-        if (String[i] != ' ') 
+        if (isspace(String[i]) == 0) 
         {
             ModifiedString[ModifiedStringSize] = String[i];
         }
-        if (String[i] == ' ')
+        if (isspace(String[i]))
         {
             ModifiedString[ModifiedStringSize] = ' ';
-            while (String[i] == ' ') 
+            while (isspace(String[i])) 
             {
                 i++;    
             }
@@ -204,10 +204,9 @@ void Problem_C_3_2008()
     
     for (int l = 0; l < MaxStringSize; l++)                                             //counter of words 
     {
-        
         for (int i = 0; i < MaxStringSize; i++)                                         //
-        {                      
-            assert(i >= 0);                                                         //
+        {                                                                               //
+            assert(i >= 0);                                                             //
             Word[i] = '0';                                                              //    initializing Word[]
         }                                                                               //
         
@@ -228,15 +227,13 @@ void Problem_C_3_2008()
                 ModifiedStringSize++;                                                   //rewriting the character which is not a letter
                 break;                                                                  //in its place
             }                                                                           //
-       
         }
+        
         if (ModifiedStringSize >= 2 && ModifiedString[ModifiedStringSize - 1] == '\n')  //-1 because we've already increased  
         {                                                                               //ModifiedStringSize but havent written anything
             break;                                                                      //in the new position yet
         }                                                                               //2 because String must have at least one char.
-        
     }
-    
     puts(ModifiedString);
 }
 
@@ -278,48 +275,48 @@ void Problem_B_6_2008()
         scanf("%s %d", Students[i].name, &Students[i].mark);
     }
     
-    for (int i = NumberOfStudents - 1; i > 0; i--) 
-    {
-        assert(i <= NumberOfstudents);
-        for (int j = 0; j < i; j++) 
-        {
-            assert(j >= 0);
-            if (strcmp(Students[j].name, Students[j + 1].name) > 0)
-            {
-                struct student SwapStudents = Students[j];
-                Students[j] = Students[j + 1];
-                Students[j + 1] = SwapStudents;
-            }
-        }    
-    }
+    for (int i = NumberOfStudents - 1; i > 0; i--)                                 //
+    {                                                                              //
+        assert(i <= NumberOfStudents);                                             //
+        for (int j = 0; j < i; j++)                                                //
+        {                                                                          //
+            assert(j >= 0);                                                        //
+            if (strcmp(Students[j].name, Students[j + 1].name) > 0)                //
+            {                                                                      //    sorting
+                struct student SwapStudents = Students[j];                         //
+                Students[j] = Students[j + 1];                                     //
+                Students[j + 1] = SwapStudents;                                    //
+            }                                                                      //
+        }                                                                          //
+    }                                                                              //
     
-    for (int i = 0; i < NumberOfStudents; i++) 
-    {
-        assert(i >= 0);
-        printf("%s %c %d %c", Students[i].name, ' ', Students[i].mark, '\n');   
-    }
-    printf("%c", '\n');
+    for (int i = 0; i < NumberOfStudents; i++)                                     //
+    {                                                                              //
+        assert(i >= 0);                                                            //
+        printf("%s %c %d %c", Students[i].name, ' ', Students[i].mark, '\n');      //    printing students
+    }                                                                              //
+    printf("%c", '\n');                                                            //
     
-    for (int i = NumberOfStudents - 1; i > 0; i--) 
-    {
-        assert(i <= NumberOfStudents);
-        for (int j = 0; j < i; j++) 
-        assert(j >= 0);
-        {
-            if (Students[j].mark - Students[j + 1].mark < 0)
-            {
-                struct student SwapStudents = Students[j];
-                Students[j] = Students[j + 1];
-                Students[j + 1] = SwapStudents;
-            }
-        }    
-    }
+    for (int i = NumberOfStudents - 1; i > 0; i--)                                 //
+    {                                                                              //
+        assert(i <= NumberOfStudents);                                             //
+        for (int j = 0; j < i; j++)                                                //
+        {                                                                          //
+            assert(j >= 0);                                                        //
+            if (Students[j].mark - Students[j + 1].mark < 0)                       //
+            {                                                                      //    sorting
+                struct student SwapStudents = Students[j];                         //
+                Students[j] = Students[j + 1];                                     //
+                Students[j + 1] = SwapStudents;                                    //
+            }                                                                      //
+        }                                                                          //
+    }                                                                              //
     
-    for (int i = 0; i < NumberOfStudents; i++) 
-    {
-        assert(i >= 0);
-        printf("%s %c %d %c", Students[i].name, ' ', Students[i].mark, '\n');
-    }
+    for (int i = 0; i < NumberOfStudents; i++)                                     //
+    {                                                                              //
+        assert(i >= 0);                                                            //    printing
+        printf("%s %c %d %c", Students[i].name, ' ', Students[i].mark, '\n');      //
+    }                                                                              //
 }
 
 void Problem_B_8_2008()
