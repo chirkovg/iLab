@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 void Problem_C_4_2008();                                //    Problem C from 4th ... from year 2008
 
@@ -17,6 +18,10 @@ void Problem_C_3_2008();
 void Problem_A_6_2008();
 
 void Problem_B_6_2008();
+
+void Problem_C_1_2007();
+
+int Weigh(int mass);
 
 const int MaxNumberOfStudents = 10000;
 const int MaxNameSize = 29;
@@ -66,6 +71,10 @@ int main()
     if (CodeOfProblem == 6)
     {
         Problem_B_8_2008();
+    }
+    if (CodeOfProblem == 7)
+    {
+        Problem_C_1_2007();
     }
 }
 
@@ -308,4 +317,36 @@ void Problem_B_8_2008()
         }
     }
     printf("%c %s %d %c %s %d %c", '\n', "Digits =", DigitsCount, '\n', "Letters =", LettersCount, '\n');
+}
+
+int Weigh(int mass)
+{
+    for (int i = 0; 4*i + 2 <= mass; i++) 
+    {
+        if (mass == 4*i + 2) return 0; 
+    }
+    for (int i = 0; pow(4,i) <= mass; i++) 
+    {
+        if (mass == pow(4,i)) return 1;     
+    }
+    for (int i = 0; 4*i - 1 <= mass; i++) 
+    {
+        if ((4*i) == mass|| (4*i - 1) == mass || (4*i + 1) == mass) 
+        {
+            int j = i;
+            return Weigh(j);
+        }
+    }
+    assert(1 == 0);                                          // in case none of ifs works, 
+                                                             //in other cases this assert is not destinated
+                                                             //to be sure that some value from Weigh(mass) is returned
+}
+
+void Problem_C_1_2007()
+{
+    int mass = 0;
+    printf("%s", "Type your number \n");
+    scanf("%d", &mass);
+    if (Weigh(mass) == 1) printf("%s", "YES \n");
+    if(Weigh(mass) == 0) printf("%s", "NO \n");
 }
