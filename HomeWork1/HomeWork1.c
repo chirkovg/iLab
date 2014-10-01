@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
+#include <ctype.h>
+
 
 void Problem_C_4_2008();                                //    Problem C from 4th ... from year 2008
 
@@ -32,49 +34,52 @@ struct student
     int mark;
 };
 
-struct twostudents
-{
-    struct student Student1;
-    struct student Student2;
-};
-
 void Problem_B_8_2008();
 
                                                          
 int main()
 {
     printf("%s %c", "Type the code of the problem:", '\n');
-    int CodeOfProblem;
+    int CodeOfProblem = 0;
     scanf("%d", &CodeOfProblem);
     
-    if (CodeOfProblem == 1)
+    switch(CodeOfProblem)
     {
-        Problem_C_4_2008();
-    }
-    
-    if (CodeOfProblem == 2)
-    {
-        Problem_C_1_2008();
-    }
-    if (CodeOfProblem == 3)
-    {
-        Problem_C_3_2008();
-    }
-    if (CodeOfProblem == 4)
-    {
-        Problem_A_6_2008();
-    }
-    if (CodeOfProblem == 5)
-    {
-        Problem_B_6_2008();
-    }
-    if (CodeOfProblem == 6)
-    {
-        Problem_B_8_2008();
-    }
-    if (CodeOfProblem == 7)
-    {
-        Problem_C_1_2007();
+        case 1: 
+        {
+            Problem_C_4_2008();
+            break;
+        }
+        case 2: 
+        {
+            Problem_C_1_2008();
+            break;
+        }
+        case 3: 
+        {
+            Problem_C_3_2008();
+            break;
+        }
+        case 4: 
+        {
+            Problem_A_6_2008();
+            break;
+        }
+        case 5: 
+        {
+            Problem_B_6_2008();
+            break;
+        }
+        case 6: 
+        {
+            Problem_B_8_2008();
+            break;
+        }
+        case 7: 
+        {
+            Problem_C_1_2007();
+            break;
+        }
     }
 }
 
@@ -88,17 +93,21 @@ void Problem_C_4_2008()
     int Table[MaxTableSize][MaxAnswersCount];            //    made our table
     for (int i = 0; i < MaxTableSize; i++) 
     {
+        assert(i >= 0);
         for (int j = 0; j < MaxAnswersCount; j++) 
         {
+            assert(j >= 0);
             Table[i][j] = 0;    
         }    
     }
                                                  
     for (int i = 0; i < TableSize; i++)                 //
     {                                                   //
-        assert(i < MaxTableSize);                       //
+        assert(i < MaxTableSize); 
+        assert(i >= 0);                      //
         for (int j = 0; j < TableSize; j++)             //
-        {                                               //    reading the items of table
+        {                      
+            assert(j >= 0);                         //    reading the items of table
             assert(j < MaxTableSize);                   //
             scanf("%d", &Table[i][j]);                  //
         }                                               //
@@ -115,6 +124,7 @@ void Problem_C_4_2008()
     for (int k = 0; k < AnswersCount; k++) 
     {
         assert(k < MaxAnswersCount);
+        assert(k >= 0);
         answer[k] = 0;        
         for (int i = 0; i <= k && i < TableSize; i++)
         {
@@ -136,13 +146,18 @@ void Problem_C_1_2008()
     char ModifiedString[MaxStringSize];
     
     char String[MaxStringSize];
+    for (int i = 0; i < MaxStringSize; i++) 
+    {
+        String[i] = '\n';    
+    }
     int StringSize = 0;
     
-    printf("%s %c", "Type your string with EOF in the end:", '\n');
+    printf("%s", "Type your string with EOF in the end: \n");
     for (int i = 0; i < MaxStringSize; i++)
     {
+        assert(i >= 0);
         scanf("%c", &String[i]);
-        if(i > 1 && String[i] == 'F' && String[i - 1] == 'O' && String[i - 2] == 'E') //    if last three characters are "EOF"
+        if(i > 1 && strncmp(&String[i - 3], "EOF", 3) == 0) //    3 because we need to compare only 3 last letters
         {
             StringSize = i - 3;
             break;
@@ -153,6 +168,7 @@ void Problem_C_1_2008()
     for (int i = 0; i < StringSize; i++) 
     {
         assert(i < MaxStringSize);
+        assert(i >= 0);
         if (String[i] != ' ') 
         {
             ModifiedString[ModifiedStringSize] = String[i];
@@ -168,35 +184,42 @@ void Problem_C_1_2008()
         }
         ModifiedStringSize++;
     }
-    
-    for (int i = 0; i < ModifiedStringSize; i++) 
-    {
-        printf("%c", ModifiedString[i]);    
-    }
+        puts(ModifiedString);    
 }
 
 void Problem_C_3_2008()
 {
     printf("%s", "Type your string: \n");
     int ModifiedStringSize = 0;
+    
     char Word[MaxStringSize];                                                           //here we'll put every word from inputted string
     char ModifiedString[MaxStringSize];                                                 //future result
-    for (int l = 0; l < MaxStringSize; l++)                                             //counter of words
+    for (int i = 0; i < MaxStringSize; i++) 
+    {
+        assert(i >= 0);
+        assert(i < MaxStringSize);
+        ModifiedString[i] = '0';
+        Word[i] = '0';
+    }
+    
+    for (int l = 0; l < MaxStringSize; l++)                                             //counter of words 
     {
         
         for (int i = 0; i < MaxStringSize; i++)                                         //
-        {                                                                               //
+        {                      
+            assert(i >= 0);                                                         //
             Word[i] = '0';                                                              //    initializing Word[]
         }                                                                               //
         
         for (int i = 0; i < MaxStringSize; i++)                                         //counter of characters
         {
+            assert(i >= 0);
             scanf("%c", &Word[i]);
-            if (!(((int)'A' <= (int)Word[i] && (int)Word[i] <= (int)'Z') ||             //
-                ((int)'a' <= (int)Word[i] && (int)Word[i] <= (int)'z')))                //if the character is NOT a letter
+            if (isalpha(Word[i]) == 0)                                                  //if the character is NOT a letter
             {
                 for (int j = i - 1; j >= 0; j--)                                        //
-                {                                                                       //
+                {                    
+                    assert(j < MaxStringSize);                                                   //
                     ModifiedString[ModifiedStringSize] = Word[j];                       //rewriting Word into ModifiedString
                     ModifiedStringSize++;                                               //in opposite order
                 }                                                                       //
@@ -214,10 +237,7 @@ void Problem_C_3_2008()
         
     }
     
-    for (int i = 0; i < ModifiedStringSize; i++) 
-    {
-        printf("%c", ModifiedString[i]);    
-    }    
+    puts(ModifiedString);
 }
 
 void Problem_A_6_2008()
@@ -227,8 +247,10 @@ void Problem_A_6_2008()
     scanf("%d %d", &Length, &Height);
     for (int i = 0; i < Height; i++) 
     {
+        assert(i >= 0);
         for (int j = 0; j < Length; j++)
         {
+            assert(j >= 0);
             printf("%d %c", j*Height + (i + 1), ' ');
         }    
         printf("%c", '\n');
@@ -241,6 +263,7 @@ void Problem_B_6_2008()
     for (int i = 0; i < MaxNumberOfStudents; i++) 
     {
         Students[i].mark = 0;    
+        for(int j = 0; j < MaxNameSize; j++) Students[i].name[j] = '0'; 
     }
     
     printf("%s", "Type the number of students: \n");
@@ -251,43 +274,50 @@ void Problem_B_6_2008()
     for (int i = 0; i < NumberOfStudents; i++) 
     {
         assert(i < MaxNumberOfStudents);
+        assert(i >= 0);
         scanf("%s %d", Students[i].name, &Students[i].mark);
     }
     
     for (int i = NumberOfStudents - 1; i > 0; i--) 
     {
+        assert(i <= NumberOfstudents);
         for (int j = 0; j < i; j++) 
         {
+            assert(j >= 0);
             if (strcmp(Students[j].name, Students[j + 1].name) > 0)
             {
-                struct twostudents TwoStudents = {Students[j], Students[j + 1]};
-                Students[j] = TwoStudents.Student2;
-                Students[j + 1] = TwoStudents.Student1;
+                struct student SwapStudents = Students[j];
+                Students[j] = Students[j + 1];
+                Students[j + 1] = SwapStudents;
             }
         }    
     }
     
     for (int i = 0; i < NumberOfStudents; i++) 
     {
+        assert(i >= 0);
         printf("%s %c %d %c", Students[i].name, ' ', Students[i].mark, '\n');   
     }
     printf("%c", '\n');
     
     for (int i = NumberOfStudents - 1; i > 0; i--) 
     {
+        assert(i <= NumberOfStudents);
         for (int j = 0; j < i; j++) 
+        assert(j >= 0);
         {
             if (Students[j].mark - Students[j + 1].mark < 0)
             {
-                struct twostudents TwoStudents = {Students[j], Students[j + 1]};
-                Students[j] = TwoStudents.Student2;
-                Students[j + 1] = TwoStudents.Student1;
+                struct student SwapStudents = Students[j];
+                Students[j] = Students[j + 1];
+                Students[j + 1] = SwapStudents;
             }
         }    
     }
     
     for (int i = 0; i < NumberOfStudents; i++) 
     {
+        assert(i >= 0);
         printf("%s %c %d %c", Students[i].name, ' ', Students[i].mark, '\n');
     }
 }
@@ -300,6 +330,7 @@ void Problem_B_8_2008()
     while (String[i - 1] != '\n' || i < 2)                         //2 is because there must be at least 1 character, so we are looking 
     {                                                              //for \n just from the second symbol
         assert(i < MaxStringSize);
+        assert(i >= 0);
         scanf("%c", &String[i]);
         i++;    
     }
@@ -307,11 +338,12 @@ void Problem_B_8_2008()
     int DigitsCount = 0, LettersCount = 0;
     for (int j = 0; j < i; j++) 
     {
-        if ('0' <= String[j] && String[j] <= '9') 
+        assert(j < MaxStringSize);
+        if (isdigit(String[j])) 
         {
             DigitsCount++;    
         }
-        if (('a' <= String[j] && String[j] <= 'z') || ('A' <= String[j] && String[j] <= 'Z'))
+        if (isalpha(String[j]))
         {
             LettersCount++;
         }
