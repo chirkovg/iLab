@@ -366,7 +366,7 @@ int Weigh(int mass)
             return Weigh(j);
         }
     }
-    assert(1 == 0);                                          // in case none of ifs works, 
+    assert("No condition worked" && 0);                                          // in case none of ifs works, 
                                                              //in other cases this assert is not destinated
                                                              //to be sure that some value from Weigh(mass) is returned
 }
