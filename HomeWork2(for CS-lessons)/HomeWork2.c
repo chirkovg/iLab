@@ -4,31 +4,38 @@
 #include <assert.h>
 #include <io.h>
 
-
-char* FileToArray(char FileName[]);                     /*!  \brief Converts text from file to Array
-                                                         *   @param FileName[] is the name of file copied
-                                                         *   @return Pointer to array of chars
-                                                         *   @warning free result after using!
-                                                         */
-
-char** BegOfLinesFinder(char* String);                  /*!  \brief Finds beginnings of lines in the string
-                                                         *   @param String is the pointer to string analised
-                                                         *   @return Pointer to array of char pointers(pointer to
-                                                         *                                             array of strings)
-                                                         *   @warning free result after using!
-                                                         */
-
-int CountLines(char* String);                           /*!  \brief Counts the lines in string
-                                                         *   @param String is the pointer to string analised
-                                                         *   @return number of lines in String
-                                                         */
-
-int StrCmp(const void* str1, const void* str2);         /*!  \brief strcmp() equivalent for qsort()
-                                                         *   @param pointers to two strings compared
-                                                         *   @return integer > 0, if str1 > str2;
-                                                         *           0, if str1 = str2;
-                                                         *           integer < 0, if str2 < str1
-                                                         */
+/*!  \brief Converts text from file to Array
+ *   @param FileName[] is the name of file copied 
+ *   @return Pointer to array of chars
+ *   @warning free result after using!
+ */
+char* FileToArray(char FileName[]);   
+            
+                  
+/*!  \brief Finds beginnings of lines in the string
+ *   @param String is the pointer to string analised
+ *   @return Pointer to array of char pointers(pointer to array of strings)
+ *   @warning free result after using!
+ */
+char** BegOfLinesFinder(char* String);                  
+                    
+                                                         
+/*!  \brief Counts the lines in string                                                         
+ *   @param String is the pointer to string analised                                                         
+ *   @return number of lines in String                                                         
+ */                                                         
+int CountLines(char* String);                           
+                                                         
+                                                         
+/*!  \brief strcmp() equivalent for qsort() 
+ *   @param pointers to two strings compared                                                        
+ *   @return integer > 0, if str1 > str2;
+ *           0, if str1 = str2;
+ *           integer < 0, if str2 < str1
+ */
+int StrCmp(const void* str1, const void* str2);         
+                                                         
+                                                         
 
 int main()
 {
@@ -54,6 +61,7 @@ int main()
 
 char* FileToArray(char* FileName)
 {
+    assert(FileName);
     FILE* File = fopen(FileName, "r");
     assert(File);
 
