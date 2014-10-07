@@ -33,7 +33,16 @@ int CountLines(char* String);
  *           0, if str1 = str2;
  *           integer < 0, if str2 < str1
  */
-int StrCmp(const void* str1, const void* str2);         
+int StrCmp(const void* str1, const void* str2);       
+
+struct text
+{
+    char* String;
+    int Lines;
+    char** StringsArray;
+};
+
+struct text FileToText(char* FileName);
                                                          
                                                          
 
@@ -119,4 +128,14 @@ int StrCmp(const void* str1, const void* str2)
     char* x = *((char**) str1);
     char* y = *((char**) str2);
     return strcmp(x, y);
+}
+
+
+struct text FileToText(char* FileName)
+{
+    struct text result = {NULL, 0, NULL};
+    result.String = FileToArray(FileName);
+    result.Lines = CountLines(Onegin);
+    result.StringsArray = BegOfLinesFinder(Onegin);
+    return result;
 }
