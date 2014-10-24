@@ -13,6 +13,7 @@ enum StackError {NOERROR, STACKPOINTERNULL, MALLOCERROR, STACKARRAYNULLPOINTER,
 
 enum StackError stackerrno = NOERROR;
 
+
 int Stack_ctor (struct stack_t* Stack, int ElementsAmount)
 {
     if (!Stack)
@@ -20,8 +21,12 @@ int Stack_ctor (struct stack_t* Stack, int ElementsAmount)
         stackerrno = STACKPOINTERNULL;
         return 0;
     }
-    Stack -> Array = (double*) malloc(Stack -> ElementsCount*sizeof(double));  //Stack -> Array initialized later, cause want to put
-    if (Stack -> Array == NULL)                                       //POISON in unused elements of array for more protection
+    Stack -> ElementsCount = ElementsAmount;
+    Stack -> Array = (double*) malloc(Stack -> ElementsCount*sizeof(double));  //Stack -> Array initialized later,
+                                                                               //cause want to put POISON in unused
+                                                                               //elements of array for more protection
+
+    if (Stack -> Array == NULL)
     {
         stackerrno = MALLOCERROR;
         return 0;
@@ -30,8 +35,8 @@ int Stack_ctor (struct stack_t* Stack, int ElementsAmount)
     {
         Stack -> Array[i] = POISON;
     }
+
     Stack -> Position = 0;
-    Stack -> ElementsCount = ElementsAmount;
     return 1;
 }
 
@@ -63,6 +68,39 @@ int Stack_Ok(struct stack_t* Stack)
     }
     return 1;
 }
+
+char* stackerror(int code)
+{
+    if (code == NOERROR)
+    {
+        return "There's no errors with stack";
+    }
+    if (code == STACKPOINTERNULL)
+    {
+        return "Stack Pointer is invalid";
+    }
+    if (code == MALLOCERROR)
+    {
+        return "Malloc didn't work properly";
+    }
+    if (code == STACKARRAYNULLPOINTER)
+    {
+        return "Array in stack has invalid pointer";
+    }
+    if (code == BROKENPOSITION)
+    {
+        return "Something's bad with stack counter";
+    }
+    if (code == NOTENOUGHMEMORY)
+    {
+        return "There's not enough memory for your stack";
+    }
+    if (code == NOELEMENTS)
+    {
+        return "There's no elements in your stack";
+    }
+}
+
 
 int Stack_dtor (struct stack_t* Stack)
 {
@@ -130,12 +168,12 @@ int Stack_pull(struct stack_t* Stack, double* Element)
 int Stack_dump(struct stack_t* Stack)
 {
     if (Stack_Ok(Stack)) printf("%s \n", "Stack is ok");
-        else printf ("%s \n", "Stack is not ok!");
-    printf("%s %d \n %s %d \n", "Size of Stack:", Stack -> ElementsCount, "Number of elements in stack:", Stack -> Position);
+        else printf ("%s\n%s\n" , "Stack is not ok!", stackerror(stackerrno));
+    printf("%s %d\n%s %d\n", "Size of Stack:", Stack -> ElementsCount, "Number of elements in stack:", Stack -> Position);
     printf("%s \n", "Elements in stack:");
     for (int i = 0; i < Stack -> ElementsCount; i++)
     {
-        printf("%lg \n", Stack -> Array[i]);
+        printf("%d:%lg \n", i, Stack -> Array[i]);
     }
     return 0;
 }
