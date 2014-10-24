@@ -50,6 +50,7 @@ int               my_stack_double_delete( my_stack_double * this)
     if (this == NULL) return STACKPOINTERNULL;
     if (this -> Array == NULL) return STACKARRAYNULLPOINTER;
     free(Stack -> Array);
+    free(Stack);
     Stack -> Array = NULL;
     Stack -> stack_pointer = 0;
     Stack -> ElementsCount = 0;
@@ -97,8 +98,10 @@ int my_stack_double_push( my_stack_double * this, double data)
         }
         else
         {
-            *(Stack -> stack_pointer) = data;
+            int a = Stack -> stack_pointer - Stack -> Array;
             Stack -> Array = NewArray;
+            Stack -> stack_pointer = NewArray + a;
+            *(Stack -> stack_pointer) = data;
             Stack -> ElementsCount++;
             Stack -> stack_pointer++;
             return NOERROR;

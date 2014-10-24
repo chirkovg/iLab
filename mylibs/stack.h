@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #define POISON 13666
 
 struct stack_t
@@ -11,14 +12,14 @@ struct stack_t
 enum StackError {NOERROR, STACKPOINTERNULL, MALLOCERROR, STACKARRAYNULLPOINTER,
                  BROKENPOSITION, NOTENOUGHMEMORY, NOELEMENTS};
 
-enum StackError stackerrno = NOERROR;
+enum StackError Stack_errno = NOERROR;
 
 
 int Stack_ctor (struct stack_t* Stack, int ElementsAmount)
 {
     if (!Stack)
     {
-        stackerrno = STACKPOINTERNULL;
+        Stack_errno = STACKPOINTERNULL;
         return 0;
     }
     Stack -> ElementsCount = ElementsAmount;
@@ -28,7 +29,7 @@ int Stack_ctor (struct stack_t* Stack, int ElementsAmount)
 
     if (Stack -> Array == NULL)
     {
-        stackerrno = MALLOCERROR;
+        Stack_errno = MALLOCERROR;
         return 0;
     }
     for (int i = 0; i < Stack -> ElementsCount; i++)                           //here it's initialized
@@ -44,24 +45,24 @@ int Stack_Ok(struct stack_t* Stack)
 {
     if (!Stack)
     {
-        stackerrno = STACKPOINTERNULL;
+        Stack_errno = STACKPOINTERNULL;
         return 0;
     }
     if (Stack -> Array == NULL)
     {
-        stackerrno = STACKARRAYNULLPOINTER;
+        Stack_errno = STACKARRAYNULLPOINTER;
         return 0;
     }
     if (Stack -> Position < 0 || Stack -> Position > Stack -> ElementsCount)
     {
-        stackerrno = BROKENPOSITION;
+        Stack_errno = BROKENPOSITION;
         return 0;
     }
     for (int i = Stack -> Position; i < Stack -> ElementsCount; i++)
     {
         if (Stack -> Array[i] != POISON)
         {
-            stackerrno = BROKENPOSITION;
+            Stack_errno = BROKENPOSITION;
             return 0;
             break;
         }
@@ -71,6 +72,18 @@ int Stack_Ok(struct stack_t* Stack)
 
 char* stackerror(int code)
 {
+    switch(code)
+    {
+        case NOERROR: return "There's no errors with stack";
+        case STACKPOINTERNULL: return "Stack Pointer is invalid";
+        case MALLOCERROR: return "Malloc didn't work properly";
+        case STACKARRAYNULLPOINTER: return "Array in stack has invalid pointer";
+        case BROKENPOSITION: return "Something's bad with stack counter";
+        case NOTENOUGHMEMORY: return "There's not enough memory for your stack";
+        case NOELEMENTS: return "There's no elements in your stack";
+        default: return "Something wrong with Stack_errno";
+    }
+    /*
     if (code == NOERROR)
     {
         return "There's no errors with stack";
@@ -98,7 +111,7 @@ char* stackerror(int code)
     if (code == NOELEMENTS)
     {
         return "There's no elements in your stack";
-    }
+    }*/
 }
 
 
@@ -116,7 +129,7 @@ int Stack_dtor (struct stack_t* Stack)
     return 0;
 }
 
-int Stack_push(struct stack_t* Stack, double Element)
+int Stack_pop(struct stack_t* Stack, double Element)
 {
     if (Stack_Ok(Stack))
     {
@@ -131,12 +144,13 @@ int Stack_push(struct stack_t* Stack, double Element)
             double* NewArray = (double*) realloc(Stack -> Array, (Stack -> ElementsCount + 1)*sizeof(double));
             if (!NewArray)
             {
-                stackerrno = NOTENOUGHMEMORY;
+                Stack_errno = NOTENOUGHMEMORY;
                 return 0;
             }
             else
             {
                 Stack -> Array = NewArray;
+                Stack -> Array[Stack -> Position] = Element;
                 Stack -> ElementsCount++;
                 Stack -> Position++;
                 return 1;
@@ -152,7 +166,7 @@ int Stack_pull(struct stack_t* Stack, double* Element)
     {
         if (Stack -> Position == 0)
         {
-            stackerrno = NOELEMENTS;
+            Stack_errno = NOELEMENTS;
             return 0;
         }
         else
@@ -168,7 +182,7 @@ int Stack_pull(struct stack_t* Stack, double* Element)
 int Stack_dump(struct stack_t* Stack)
 {
     if (Stack_Ok(Stack)) printf("%s \n", "Stack is ok");
-        else printf ("%s\n%s\n" , "Stack is not ok!", stackerror(stackerrno));
+        else printf ("%s\n%s\n" , "Stack is not ok!", stackerror(Stack_errno));
     printf("%s %d\n%s %d\n", "Size of Stack:", Stack -> ElementsCount, "Number of elements in stack:", Stack -> Position);
     printf("%s \n", "Elements in stack:");
     for (int i = 0; i < Stack -> ElementsCount; i++)
