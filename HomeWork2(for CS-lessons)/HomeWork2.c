@@ -5,35 +5,35 @@
 #include <io.h>
 
 /*!  \brief Converts text from file to Array
- *   @param FileName[] is the name of file copied 
+ *   @param FileName[] is the name of file copied
  *   @return Pointer to array of chars
  *   @warning free result after using!
  */
-char* FileToArray(char FileName[]);   
-            
-                  
+char* FileToArray(char FileName[]);
+
+
 /*!  \brief Finds beginnings of lines in the string
  *   @param String is the pointer to string analised
  *   @return Pointer to array of char pointers(pointer to array of strings)
  *   @warning free result after using!
  */
-char** BegOfLinesFinder(char* String);                  
-                    
-                                                         
-/*!  \brief Counts the lines in string                                                         
- *   @param String is the pointer to string analised                                                         
- *   @return number of lines in String                                                         
- */                                                         
-int CountLines(char* String);                           
-                                                         
-                                                         
-/*!  \brief strcmp() equivalent for qsort() 
- *   @param pointers to two strings compared                                                        
+char** BegOfLinesFinder(char* String);
+
+
+/*!  \brief Counts the lines in string
+ *   @param String is the pointer to string analised
+ *   @return number of lines in String
+ */
+int CountLines(char* String);
+
+
+/*!  \brief strcmp() equivalent for qsort()
+ *   @param pointers to two strings compared
  *   @return integer > 0, if str1 > str2;
  *           0, if str1 = str2;
  *           integer < 0, if str2 < str1
  */
-int StrCmp(const void* str1, const void* str2);       
+int StrCmp(const void* str1, const void* str2);
 
 struct text
 {
@@ -43,8 +43,8 @@ struct text
 };
 
 struct text FileToText(char* FileName);
-                                                         
-                                                         
+
+
 
 int main()
 {
@@ -94,7 +94,7 @@ int CountLines(char* String)
     assert(String);
     int result = 1;
     char* Pointer = String;
-    while(Pointer = strchr(Pointer, '\n'))
+    while((Pointer = strchr(Pointer, '\n')))
     {
         result++;
         Pointer++;
@@ -135,7 +135,7 @@ struct text FileToText(char* FileName)
 {
     struct text result = {NULL, 0, NULL};
     result.String = FileToArray(FileName);
-    result.Lines = CountLines(Onegin);
-    result.StringsArray = BegOfLinesFinder(Onegin);
+    result.Lines = CountLines(result.String);
+    result.StringsArray = BegOfLinesFinder(result.String);
     return result;
 }
