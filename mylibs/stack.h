@@ -1,3 +1,7 @@
+#ifndef _STACK_H
+#define _STACK_H
+
+
 #include <stdlib.h>
 #include <stdio.h>
 #define POISON 13666
@@ -9,10 +13,12 @@ struct stack_t
     int ElementsCount;
 };
 
-enum StackError {NOERROR, STACKPOINTERNULL, MALLOCERROR, STACKARRAYNULLPOINTER,
-                 BROKENPOSITION, NOTENOUGHMEMORY, NOELEMENTS};
+enum StackError {NOERROR = 0, STACKPOINTERNULL = 1, MALLOCERROR = 2, STACKARRAYNULLPOINTER = 3,
+                 BROKENPOSITION = 4, NOTENOUGHMEMORY = 5, NOELEMENTS = 6};
 
 enum StackError Stack_errno = NOERROR;
+
+int Stack_Ok(struct stack_t* Stack);
 
 
 int Stack_ctor (struct stack_t* Stack, int ElementsAmount)
@@ -36,9 +42,9 @@ int Stack_ctor (struct stack_t* Stack, int ElementsAmount)
     {
         Stack -> Array[i] = POISON;
     }
-
     Stack -> Position = 0;
-    return 1;
+    if (Stack_OK(Stack)) return 1;
+    else return 0;
 }
 
 int Stack_Ok(struct stack_t* Stack)
@@ -83,35 +89,6 @@ char* stackerror(int code)
         case NOELEMENTS: return "There's no elements in your stack";
         default: return "Something wrong with Stack_errno";
     }
-    /*
-    if (code == NOERROR)
-    {
-        return "There's no errors with stack";
-    }
-    if (code == STACKPOINTERNULL)
-    {
-        return "Stack Pointer is invalid";
-    }
-    if (code == MALLOCERROR)
-    {
-        return "Malloc didn't work properly";
-    }
-    if (code == STACKARRAYNULLPOINTER)
-    {
-        return "Array in stack has invalid pointer";
-    }
-    if (code == BROKENPOSITION)
-    {
-        return "Something's bad with stack counter";
-    }
-    if (code == NOTENOUGHMEMORY)
-    {
-        return "There's not enough memory for your stack";
-    }
-    if (code == NOELEMENTS)
-    {
-        return "There's no elements in your stack";
-    }*/
 }
 
 
@@ -129,7 +106,7 @@ int Stack_dtor (struct stack_t* Stack)
     return 0;
 }
 
-int Stack_pop(struct stack_t* Stack, double Element)
+int Stack_push(struct stack_t* Stack, double Element)
 {
     if (Stack_Ok(Stack))
     {
@@ -160,7 +137,7 @@ int Stack_pop(struct stack_t* Stack, double Element)
     return 0;
 }
 
-int Stack_pull(struct stack_t* Stack, double* Element)
+int Stack_pop(struct stack_t* Stack, double* Element)
 {
     if(Stack_Ok(Stack))
     {
@@ -191,3 +168,7 @@ int Stack_dump(struct stack_t* Stack)
     }
     return 0;
 }
+
+
+#endif   
+//_STACK_H
